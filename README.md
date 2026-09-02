@@ -90,3 +90,7 @@ För att bli godkänd på den här uppgiften MÅSTE ni använda GIT och GitHub. 
 - [ ] Det går att ta bort produkter via admin sidan
 - [ ] Det går att redigera produkter via admin sidan
 - [ ] Samtliga fält för adminsidans formulär ska ha valideringsregler
+
+- användande design MUI
+- produkter mumin
+- 
