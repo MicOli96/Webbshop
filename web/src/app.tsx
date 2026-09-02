@@ -1,8 +1,8 @@
-import { BrowserRouter, Route, Routes } from "react-router"
-import Layout from "./components/layout"
-import Home from "./pages/home"
-import AdminPage from "./pages/admin/adminPage"
-import ProductFormDialog from "./pages/admin/productFormDialog"
+import { BrowserRouter, Route, Routes } from "react-router";
+import Layout from "./components/layout";
+import AdminPage from "./pages/admin/adminPage";
+import ProductFormDialog from "./pages/admin/productFormDialog";
+import Home from "./pages/home";
 
 export default function App() {
   return (
@@ -17,5 +17,5 @@ export default function App() {
         </Route>
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
