@@ -1,9 +1,5 @@
-import { BrowserRouter } from "react-router";
+import Header from "./components/header"
 
 export default function App() {
-  return (
-    <BrowserRouter>
-      <main>Hello world</main>
-    </BrowserRouter>
-  );
+  return <Header />
 }
