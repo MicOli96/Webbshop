@@ -38,8 +38,8 @@ export default function Home() {
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-          gap: 3,
+          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+          gap: 8,
         }}
       >
         {!loading && products.length === 0 && (
@@ -52,7 +52,7 @@ export default function Home() {
                 component="img"
                 image={product.imageUrl}
                 alt={product.title}
-                sx={{ height: 160, objectFit: 'cover' }}
+                sx={{ height: 320, objectFit: 'cover' }}
               />
               <CardContent>
                 <Typography variant="subtitle1" component="h2" noWrap>
@@ -61,6 +61,11 @@ export default function Home() {
                 <Typography variant="body2" color="text.secondary">
                   {product.price.toFixed(2)} kr
                 </Typography>
+                {product.imageCredit && (
+                  <Typography variant="caption" color="text.disabled" component="p" sx={{ mt: 0.5 }}>
+                    {product.imageCredit}
+                  </Typography>
+                )}
               </CardContent>
             </CardActionArea>
           </Card>

@@ -1,25 +1,39 @@
 import type { Product, ProductInput } from '../types/product';
 import { getPlaceholderImage } from '../utils/placeholderImage';
 
-// v2: fler produkter + stiliserade platshållarbilder istället för externa foton.
-const STORAGE_KEY = 'webbshop.products.v2';
+// v4: fler produkter med riktiga foton (fritt licensierade, från Wikimedia Commons)
+// istället för genererade platshållare. Övriga saknar en fri bild och behåller platshållaren.
+const STORAGE_KEY = 'webbshop.products.v5';
 
 const seedProducts: Product[] = [
   {
     id: 'p1',
-    title: 'Mumintrollet gosedjur',
-    description: 'Mjukt gosedjur föreställande Mumintrollet, 30 cm, i mjuk plysch.',
+    title: 'Muminfigurer i porslin (vintage)',
+    description:
+      'Handmålade porslinsfigurer av Muminpappa, Mymlan och Muminmamma, designade av Atelier Fauni på 1950-talet.',
     price: 349,
-    imageUrl: getPlaceholderImage('p1', 'Mumintrollet gosedjur'),
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/8/84/Moomin_toys.jpg',
+    imageCredit: 'Foto: Helsingin kaupunginmuseo, CC BY 4.0 (Wikimedia Commons)',
     stock: 24,
   },
   {
     id: 'p2',
-    title: 'Muminmugg - Snusmumriken',
-    description: 'Klassisk Arabia-mugg med motiv av Snusmumriken, rymmer 3 dl.',
+    title: 'Muminmugg - Mumintrollet',
+    description: 'Klassisk Arabia-mugg med motiv av Mumintrollet, rymmer 3 dl.',
     price: 229,
-    imageUrl: getPlaceholderImage('p2', 'Muminmugg - Snusmumriken'),
+    imageUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/8/86/Muumipeikko_nurmenvihre%C3%A4_cropped.jpg',
+    imageCredit: 'Foto: OulunPooki5131, CC BY-SA 4.0 (Wikimedia Commons)',
     stock: 40,
+  },
+  {
+    id: 'p7',
+    title: 'Muminmugg - Rosengården',
+    description: 'Arabia-mugg med rosenmotiv ur Mumin-serien, rymmer 3 dl.',
+    price: 229,
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/3/36/Rosehage_kopp2.jpg',
+    imageCredit: 'Foto: Angellsen, CC BY-SA 4.0 (Wikimedia Commons)',
+    stock: 22,
   },
   {
     id: 'p3',
@@ -39,10 +53,12 @@ const seedProducts: Product[] = [
   },
   {
     id: 'p5',
-    title: 'Muminpussel - Mumindalen',
-    description: '500 bitar, motiv av hela Mumindalen, för hela familjen.',
+    title: 'Mumin-kalender - Mumindalen (1973)',
+    description:
+      'Väggkalender med Lars Janssons vinterillustration av Mumindalen, med Mumintrollet, Snusmumriken, Lilla My och fler figurer.',
     price: 249,
-    imageUrl: getPlaceholderImage('p5', 'Muminpussel - Mumindalen'),
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/5e/Mumindalen_papperskalender.jpg',
+    imageCredit: 'Illustration: Lars Jansson / Gotlands museum, CC BY 4.0 (Wikimedia Commons)',
     stock: 18,
   },
   {
@@ -52,6 +68,34 @@ const seedProducts: Product[] = [
     price: 129,
     imageUrl: getPlaceholderImage('p6', 'Mumin-anteckningsbok'),
     stock: 50,
+  },
+  {
+    id: 'p8',
+    title: 'Mumin-gosedjur - Muminpappa & Muminmamma',
+    description: 'Mjuka gosedjur föreställande Muminpappa och Muminmamma, säljs som par.',
+    price: 399,
+    imageUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/8/8f/Gone_Driveabout_18%2C_The_Moomins_contemplate_the_Australian_bush%2C_24_Oct._2010_-_Flickr_-_PhillipC.jpg',
+    imageCredit: 'Foto: Phillip Capper, CC BY 2.0 (Wikimedia Commons)',
+    stock: 16,
+  },
+  {
+    id: 'p9',
+    title: 'Muminglas (2-pack)',
+    description: 'Pressade glastumlers med Mumin-motiv, säljs i box om två.',
+    price: 259,
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/b/ba/New_Glasses_%2853524595881%29.jpg',
+    imageCredit: 'Foto: Pete (Liverpool), CC0 (Wikimedia Commons)',
+    stock: 20,
+  },
+  {
+    id: 'p10',
+    title: 'Mumin-klubbor - Lilla My',
+    description: 'Klubbor med Lilla My-motiv, populärt godis från Mumindalen.',
+    price: 39,
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Pikku_Myy_-tikkukaramelleja.jpg',
+    imageCredit: 'Foto: Kallerna, CC BY-SA 3.0 (Wikimedia Commons)',
+    stock: 80,
   },
 ];
 
