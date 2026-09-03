@@ -1,7 +1,7 @@
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import SearchIcon from "@mui/icons-material/Search";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import AppBar from "@mui/material/AppBar";
 import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
@@ -13,14 +13,14 @@ import { alpha, styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import { Link } from "react-router";
+import { moomin } from "../theme";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
+  backgroundColor: moomin.paper,
+  border: `1px solid ${alpha(moomin.ink, 0.16)}`,
   marginRight: theme.spacing(2),
   marginLeft: 0,
   width: "100%",
@@ -38,18 +38,18 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  color: moomin.inkSoft,
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
+  color: moomin.ink,
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("md")]: {
-      width: "20ch",
+      width: "22ch",
     },
   },
 }));
@@ -83,20 +83,14 @@ export default function Header() {
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={menuId}
       keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Profil</MenuItem>
     </Menu>
   );
 
@@ -104,32 +98,26 @@ export default function Header() {
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={mobileMenuId}
       keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton size="large" aria-label="show 4" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <ShoppingCartIcon />
+        <IconButton size="large" aria-label="visa kundvagn" color="inherit">
+          <Badge badgeContent={4} color="secondary">
+            <ShoppingBagOutlinedIcon />
           </Badge>
         </IconButton>
-        <p>Cart</p>
+        <p>Kundvagn</p>
       </MenuItem>
 
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
-          aria-label="account of current user"
+          aria-label="mitt konto"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
           color="inherit"
@@ -142,46 +130,50 @@ export default function Header() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar sx={{ gap: 1 }}>
           <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
+            component={Link}
+            to="/"
+            sx={{
+              fontFamily: '"Fraunces", Georgia, serif',
+              fontStyle: "italic",
+              fontWeight: 500,
+              fontSize: { xs: "1.35rem", sm: "1.55rem" },
+              color: moomin.sageDark,
+              textDecoration: "none",
+              display: { xs: "none", sm: "block" },
+              whiteSpace: "nowrap",
+            }}
           >
-            Mumin
+            Mumindalen
           </Typography>
           <Search>
             <SearchIconWrapper>
-              <SearchIcon />
+              <SearchIcon fontSize="small" />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
+              placeholder="Sök i dalen…"
+              inputProps={{ "aria-label": "sök" }}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <Badge badgeContent={4} color="error">
-                <ShoppingCartIcon />
+            <IconButton size="large" aria-label="visa kundvagn" sx={{ color: moomin.ink }}>
+              <Badge badgeContent={4} color="secondary">
+                <ShoppingBagOutlinedIcon />
               </Badge>
             </IconButton>
 
             <IconButton
               size="large"
               edge="end"
-              aria-label="account of current user"
+              aria-label="mitt konto"
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
-              color="inherit"
+              sx={{ color: moomin.ink }}
             >
               <AdminPanelSettingsIcon />
             </IconButton>
@@ -189,11 +181,11 @@ export default function Header() {
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
-              aria-label="show more"
+              aria-label="visa mer"
               aria-controls={mobileMenuId}
               aria-haspopup="true"
               onClick={handleMobileMenuOpen}
-              color="inherit"
+              sx={{ color: moomin.ink }}
             >
               <MoreIcon />
             </IconButton>
