@@ -63,7 +63,7 @@ export default function Home() {
           I hyllan just nu
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary', mb: 4 }}>
-          Klicka på en vara för att öppna den i adminvyn — den riktiga produktsidan är på gång.
+          Klicka på en vara för att läsa mer om den.
         </Typography>
 
         <Box
@@ -80,7 +80,7 @@ export default function Home() {
             <Card key={product.id}>
               <CardActionArea
                 component={Link}
-                to={`/admin/products/${product.id}/edit`}
+                to={`/product/${product.id}`}
                 sx={{
                   '&:hover .product-image-tint': { opacity: 0.16 },
                   '&:hover .product-title::after': { width: '100%' },
