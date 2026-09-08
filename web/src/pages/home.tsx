@@ -9,9 +9,11 @@ import CardMedia from "@mui/material/CardMedia";
 import Container from "@mui/material/Container";
 import { alpha } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import { useSetAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import HillDivider from "../components/hillDivider";
+import { addItemAtom } from "../context/cart-provider";
 import { getProducts } from "../services/productService";
 import { moomin } from "../theme";
 import type { Product } from "../types/product";
@@ -21,6 +23,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
   const query = searchParams.get("q")?.trim() ?? "";
+  const addItem = useSetAtom(addItemAtom);
 
   useEffect(() => {
     void getProducts().then((data) => {
@@ -110,8 +113,8 @@ export default function Home() {
                 }}
               >
                 Handplockade fynd ur dalens gömmor — från Mymlans muggar till
-                Muminpappas gamla reseminnen. Allt du ser här finns i ett
-                enda exemplar av verkligheten, i vårt lager.
+                Muminpappas gamla reseminnen. Allt du ser här finns i ett enda
+                exemplar av verkligheten, i vårt lager.
               </Typography>
             </Box>
           </Box>
@@ -233,6 +236,16 @@ export default function Home() {
                   variant="outlined"
                   size="small"
                   startIcon={<AddShoppingCartIcon />}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    addItem({
+                      productId: product.id,
+                      title: product.title,
+                      price: product.price,
+                      quantity: 1,
+                    });
+                  }}
                 >
                   Lägg i kundvagn
                 </Button>

@@ -12,8 +12,10 @@ import MenuItem from "@mui/material/MenuItem";
 import { alpha, styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import { useAtomValue } from "jotai";
 import * as React from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
+import { cartCountAtom } from "../context/cart-provider";
 import { moomin } from "../theme";
 
 const Search = styled("form")(({ theme }) => ({
@@ -63,6 +65,7 @@ export default function Header() {
   const queryParam = searchParams.get("q") ?? "";
   const [searchValue, setSearchValue] = React.useState(queryParam);
   const [lastQueryParam, setLastQueryParam] = React.useState(queryParam);
+  const cartCount = useAtomValue(cartCountAtom);
 
   if (queryParam !== lastQueryParam) {
     setLastQueryParam(queryParam);
@@ -119,7 +122,7 @@ export default function Header() {
     >
       <MenuItem component={Link} to="/cart" onClick={handleMobileMenuClose}>
         <IconButton size="large" aria-label="visa kundvagn" color="inherit">
-          <Badge badgeContent={4} color="secondary">
+          <Badge badgeContent={cartCount} color="secondary">
             <ShoppingBagOutlinedIcon />
           </Badge>
         </IconButton>
@@ -127,11 +130,7 @@ export default function Header() {
       </MenuItem>
 
       <MenuItem component={Link} to="/admin" onClick={handleMobileMenuClose}>
-        <IconButton
-          size="large"
-          aria-label="admin"
-          color="inherit"
-        >
+        <IconButton size="large" aria-label="admin" color="inherit">
           <AdminPanelSettingsIcon />
         </IconButton>
         <p>Admin</p>
@@ -186,7 +185,7 @@ export default function Header() {
               to="/cart"
               sx={{ color: moomin.ink }}
             >
-              <Badge badgeContent={4} color="secondary">
+              <Badge badgeContent={cartCount} color="secondary">
                 <ShoppingBagOutlinedIcon />
               </Badge>
             </IconButton>
@@ -197,7 +196,7 @@ export default function Header() {
               aria-label="admin"
               component={Link}
               to="/admin"
-              sx={{color: moomin.ink}}
+              sx={{ color: moomin.ink }}
             >
               <AdminPanelSettingsIcon />
             </IconButton>

@@ -1,3 +1,3 @@
 export default function Cart() {
-  return <p>Kundvagn</p>;
+  return <main>Hello</main>;
 }
