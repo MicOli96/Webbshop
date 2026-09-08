@@ -99,7 +99,7 @@ För att bli godkänd på den här uppgiften MÅSTE ni använda GIT och GitHub. 
 - [x] Startsidan ska lista samtliga produkter.
 - [ ] Det ska gå att lägga till produkter i kundvagnen (header + toast + ls).
 - [x] Det ska gå att klicka på en produkt och komma till en detaljsida.
-- [ ] Sidan ska vara responsiv och gå att använda på mobil, tablet & desktop.
+- [x] Sidan ska vara responsiv och gå att använda på mobil, tablet & desktop.
 
 **Produkt**
 
