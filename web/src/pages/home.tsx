@@ -1,7 +1,9 @@
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
+import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Container from "@mui/material/Container";
@@ -73,6 +75,13 @@ export default function Home() {
           >
             <Button
               component={Link}
+              to="/cart"
+              variant="outlined"
+              size="small"
+            ></Button>
+
+            <Button
+              component={Link}
               to="/admin"
               variant="outlined"
               size="small"
@@ -130,7 +139,10 @@ export default function Home() {
             </Typography>
           )}
           {filteredProducts.map((product) => (
-            <Card key={product.id}>
+            <Card
+              key={product.id}
+              sx={{ height: "100%", display: "flex", flexDirection: "column" }}
+            >
               <CardActionArea
                 component={Link}
                 to={`/product/${product.id}`}
@@ -212,6 +224,16 @@ export default function Home() {
                   )}
                 </CardContent>
               </CardActionArea>
+              <CardActions sx={{ px: 2, pb: 2, mt: "auto" }}>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                  startIcon={<AddShoppingCartIcon />}
+                >
+                  Lägg i kundvagn
+                </Button>
+              </CardActions>
             </Card>
           ))}
         </Box>
