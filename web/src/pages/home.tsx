@@ -63,7 +63,7 @@ export default function Home() {
           >
             <Button
               component={Link}
-              to="/cart"
+              to="/checkout"
               variant="outlined"
               size="small"
             ></Button>
@@ -246,6 +246,7 @@ export default function Home() {
                       title: product.title,
                       price: product.price,
                       quantity: 1,
+                      imageUrl: product.imageUrl,
                     });
                     setToastOpen(true);
                   }}

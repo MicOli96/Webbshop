@@ -172,6 +172,7 @@ export default function ProductPage() {
                   title: product.title,
                   price: product.price,
                   quantity: 1,
+                  imageUrl: product.imageUrl,
                 });
                 setToastOpen(true);
               }}
