@@ -41,30 +41,13 @@ export default function Home() {
 
   return (
     <Box component="main">
-      <Box
-        sx={{
-          bgcolor: moomin.sage,
-          color: moomin.cream,
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <Box
-          component="img"
-          src="/images/little-my.png"
-          alt="Lilla My"
-          sx={{
-            display: { xs: "none", sm: "block" },
-            position: "absolute",
-            left: 380,
-            bottom: 100,
-            width: { sm: 300, md: 400 },
-            height: "auto",
-          }}
-        />
+      <Box sx={{ bgcolor: moomin.sage, color: moomin.cream }}>
         <Container
           maxWidth="md"
-          sx={{ pt: { xs: 6, sm: 8 }, pb: { xs: 4, sm: 5 } }}
+          sx={{
+            pt: { xs: 6, sm: 8 },
+            pb: { xs: 4, sm: 5 },
+          }}
         >
           <Box
             sx={{
@@ -87,30 +70,50 @@ export default function Home() {
               size="small"
             ></Button>
           </Box>
-          <Box sx={{ textAlign: "center" }}>
-            <Typography
-              variant="h2"
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: { md: 4 },
+            }}
+          >
+            <Box
+              component="img"
+              src="/images/little-my.png"
+              alt="Lilla My"
               sx={{
-                fontSize: { xs: "2.4rem", sm: "3.2rem" },
-                maxWidth: "14ch",
-                mx: "auto",
+                display: { xs: "none", md: "block" },
+                width: { md: 220, lg: 260 },
+                height: "auto",
+                flexShrink: 0,
               }}
-            >
-              Skatter från Mumindalen
-            </Typography>
-            <Typography
-              sx={{
-                mt: 2,
-                maxWidth: "48ch",
-                fontSize: "1.05rem",
-                color: alpha(moomin.cream, 0.9),
-                mx: "auto",
-              }}
-            >
-              Handplockade fynd ur dalens gömmor — från Mymlans muggar till
-              Muminpappas gamla reseminnen. Allt du ser här finns i ett enda
-              exemplar av verkligheten, i vårt lager.
-            </Typography>
+            />
+            <Box sx={{ textAlign: "center" }}>
+              <Typography
+                variant="h2"
+                sx={{
+                  fontSize: { xs: "2.4rem", sm: "3.2rem" },
+                  maxWidth: "14ch",
+                  mx: "auto",
+                }}
+              >
+                Skatter från Mumindalen
+              </Typography>
+              <Typography
+                sx={{
+                  mt: 2,
+                  maxWidth: "48ch",
+                  fontSize: "1.05rem",
+                  color: alpha(moomin.cream, 0.9),
+                  mx: "auto",
+                }}
+              >
+                Handplockade fynd ur dalens gömmor — från Mymlans muggar till
+                Muminpappas gamla reseminnen. Allt du ser här finns i ett
+                enda exemplar av verkligheten, i vårt lager.
+              </Typography>
+            </Box>
           </Box>
         </Container>
         <HillDivider fill={moomin.cream} />
