@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
+import Snackbar from "@mui/material/Snackbar";
 import { alpha } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { useSetAtom } from "jotai";
@@ -19,6 +20,7 @@ export default function ProductPage() {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null | undefined>(undefined);
   const addItem = useSetAtom(addItemAtom);
+  const [toastOpen, setToastOpen] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -171,6 +173,7 @@ export default function ProductPage() {
                   price: product.price,
                   quantity: 1,
                 });
+                setToastOpen(true);
               }}
             >
               Lägg i kundvagn
@@ -178,6 +181,12 @@ export default function ProductPage() {
           </Box>
         </Box>
       </Container>
+      <Snackbar
+        open={toastOpen}
+        autoHideDuration={2500}
+        onClose={() => setToastOpen(false)}
+        message="Tillagd i kundvagnen"
+      />
     </Box>
   );
 }
