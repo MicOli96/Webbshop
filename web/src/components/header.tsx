@@ -114,12 +114,10 @@ export default function Header() {
         <p>Kundvagn</p>
       </MenuItem>
 
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem component={Link} to="/admin" onClick={handleMobileMenuClose}>
         <IconButton
           size="large"
-          aria-label="mitt konto"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
+          aria-label="admin"
           color="inherit"
         >
           <AdminPanelSettingsIcon />
@@ -169,11 +167,10 @@ export default function Header() {
             <IconButton
               size="large"
               edge="end"
-              aria-label="mitt konto"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              sx={{ color: moomin.ink }}
+              aria-label="admin"
+              component={Link}
+              to="/admin"
+              sx={{color: moomin.ink}}
             >
               <AdminPanelSettingsIcon />
             </IconButton>
