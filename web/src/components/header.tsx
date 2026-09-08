@@ -105,7 +105,7 @@ export default function Header() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem component={Link} to="/cart" onClick={handleMobileMenuClose}>
         <IconButton size="large" aria-label="visa kundvagn" color="inherit">
           <Badge badgeContent={4} color="secondary">
             <ShoppingBagOutlinedIcon />
@@ -158,7 +158,13 @@ export default function Header() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton size="large" aria-label="visa kundvagn" sx={{ color: moomin.ink }}>
+            <IconButton
+              size="large"
+              aria-label="visa kundvagn"
+              component={Link}
+              to="/cart"
+              sx={{ color: moomin.ink }}
+            >
               <Badge badgeContent={4} color="secondary">
                 <ShoppingBagOutlinedIcon />
               </Badge>
