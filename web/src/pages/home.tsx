@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActionArea from '@mui/material/CardActionArea';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import { alpha } from '@mui/material/styles';
-import type { Product } from '../types/product';
-import { getProducts } from '../services/productService';
-import HillDivider from '../components/hillDivider';
-import { moomin } from '../theme';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardActionArea from "@mui/material/CardActionArea";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Container from "@mui/material/Container";
+import { alpha } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import { useEffect, useState } from "react";
+import { Link } from "react-router";
+import HillDivider from "../components/hillDivider";
+import { getProducts } from "../services/productService";
+import { moomin } from "../theme";
+import type { Product } from "../types/product";
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -28,31 +28,41 @@ export default function Home() {
   return (
     <Box component="main">
       <Box sx={{ bgcolor: moomin.sage, color: moomin.cream }}>
-        <Container maxWidth="md" sx={{ pt: { xs: 6, sm: 8 }, pb: { xs: 4, sm: 5 } }}>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: { xs: 2, sm: 3 } }}>
+        <Container
+          maxWidth="md"
+          sx={{ pt: { xs: 6, sm: 8 }, pb: { xs: 4, sm: 5 } }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              mb: { xs: 2, sm: 3 },
+            }}
+          >
             <Button
               component={Link}
               to="/admin"
               variant="outlined"
               size="small"
-              sx={{
-                color: moomin.cream,
-                borderColor: alpha(moomin.cream, 0.5),
-                '&:hover': { borderColor: moomin.cream, bgcolor: alpha(moomin.cream, 0.08) },
-              }}
-            >
-              Adminvy
-            </Button>
+            ></Button>
           </Box>
           <Typography
             variant="h2"
-            sx={{ fontSize: { xs: '2.4rem', sm: '3.2rem' }, maxWidth: '14ch' }}
+            sx={{ fontSize: { xs: "2.4rem", sm: "3.2rem" }, maxWidth: "14ch" }}
           >
             Skatter från Mumindalen
           </Typography>
-          <Typography sx={{ mt: 2, maxWidth: '48ch', fontSize: '1.05rem', color: alpha(moomin.cream, 0.9) }}>
-            Handplockade fynd ur dalens gömmor — från Mymlans muggar till Muminpappas gamla
-            reseminnen. Allt du ser här finns i ett enda exemplar av verkligheten, i vårt lager.
+          <Typography
+            sx={{
+              mt: 2,
+              maxWidth: "48ch",
+              fontSize: "1.05rem",
+              color: alpha(moomin.cream, 0.9),
+            }}
+          >
+            Handplockade fynd ur dalens gömmor — från Mymlans muggar till
+            Muminpappas gamla reseminnen. Allt du ser här finns i ett enda
+            exemplar av verkligheten, i vårt lager.
           </Typography>
         </Container>
         <HillDivider fill={moomin.cream} />
@@ -62,19 +72,21 @@ export default function Home() {
         <Typography variant="h5" sx={{ mb: 0.5 }}>
           I hyllan just nu
         </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 4 }}>
+        <Typography variant="body2" sx={{ color: "text.secondary", mb: 4 }}>
           Klicka på en vara för att läsa mer om den.
         </Typography>
 
         <Box
           sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
             gap: 4,
           }}
         >
           {!loading && products.length === 0 && (
-            <Typography sx={{ gridColumn: '1 / -1' }}>Hyllorna är tomma just nu.</Typography>
+            <Typography sx={{ gridColumn: "1 / -1" }}>
+              Hyllorna är tomma just nu.
+            </Typography>
           )}
           {products.map((product) => (
             <Card key={product.id}>
@@ -82,39 +94,39 @@ export default function Home() {
                 component={Link}
                 to={`/product/${product.id}`}
                 sx={{
-                  '&:hover .product-image-tint': { opacity: 0.16 },
-                  '&:hover .product-title::after': { width: '100%' },
+                  "&:hover .product-image-tint": { opacity: 0.16 },
+                  "&:hover .product-title::after": { width: "100%" },
                 }}
               >
-                <Box sx={{ position: 'relative' }}>
+                <Box sx={{ position: "relative" }}>
                   <CardMedia
                     component="img"
                     image={product.imageUrl}
                     alt={product.title}
-                    sx={{ height: 240, objectFit: 'cover' }}
+                    sx={{ height: 240, objectFit: "cover" }}
                   />
                   <Box
                     className="product-image-tint"
                     sx={{
-                      position: 'absolute',
+                      position: "absolute",
                       inset: 0,
                       bgcolor: moomin.sage,
                       opacity: 0,
-                      transition: 'opacity 200ms ease',
+                      transition: "opacity 200ms ease",
                     }}
                   />
                   <Box
                     sx={{
-                      position: 'absolute',
+                      position: "absolute",
                       left: 14,
                       bottom: -12,
                       bgcolor: moomin.mustard,
                       color: moomin.ink,
                       fontWeight: 700,
-                      fontSize: '0.85rem',
+                      fontSize: "0.85rem",
                       px: 1.25,
                       py: 0.5,
-                      transform: 'rotate(-3deg)',
+                      transform: "rotate(-3deg)",
                       border: `1px solid ${alpha(moomin.ink, 0.15)}`,
                       boxShadow: `0 2px 6px ${alpha(moomin.ink, 0.18)}`,
                     }}
@@ -127,18 +139,18 @@ export default function Home() {
                     className="product-title"
                     variant="subtitle1"
                     sx={{
-                      position: 'relative',
-                      display: 'inline-block',
-                      maxWidth: '100%',
-                      '&::after': {
+                      position: "relative",
+                      display: "inline-block",
+                      maxWidth: "100%",
+                      "&::after": {
                         content: '""',
-                        position: 'absolute',
+                        position: "absolute",
                         left: 0,
                         bottom: -2,
-                        height: '2px',
+                        height: "2px",
                         width: 0,
                         bgcolor: moomin.sage,
-                        transition: 'width 220ms ease',
+                        transition: "width 220ms ease",
                       },
                     }}
                   >
@@ -147,7 +159,12 @@ export default function Home() {
                   {product.imageCredit && (
                     <Typography
                       variant="caption"
-                      sx={{ display: 'block', mt: 1, color: 'text.secondary', fontStyle: 'italic' }}
+                      sx={{
+                        display: "block",
+                        mt: 1,
+                        color: "text.secondary",
+                        fontStyle: "italic",
+                      }}
                     >
                       {product.imageCredit}
                     </Typography>
