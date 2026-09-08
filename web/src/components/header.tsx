@@ -120,7 +120,7 @@ export default function Header() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem component={Link} to="/cart" onClick={handleMobileMenuClose}>
+      <MenuItem component={Link} to="/checkout" onClick={handleMobileMenuClose}>
         <IconButton size="large" aria-label="visa kundvagn" color="inherit">
           <Badge badgeContent={cartCount} color="secondary">
             <ShoppingBagOutlinedIcon />
@@ -182,7 +182,7 @@ export default function Header() {
               size="large"
               aria-label="visa kundvagn"
               component={Link}
-              to="/cart"
+              to="/checkout"
               sx={{ color: moomin.ink }}
             >
               <Badge badgeContent={cartCount} color="secondary">
