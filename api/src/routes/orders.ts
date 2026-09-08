@@ -1,9 +1,9 @@
-import { Router } from 'express';
+import { Hono } from 'hono';
 import { prisma } from '../db.js';
 import { HttpError } from '../middleware/errorHandler.js';
 import { orderInputSchema } from '../validation/order.js';
 
-export const ordersRouter = Router();
+export const ordersRouter = new Hono();
 
 function generateOrderNumber(): string {
   const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
@@ -11,16 +11,15 @@ function generateOrderNumber(): string {
   return `WB-${date}-${random}`;
 }
 
-ordersRouter.post('/', async (req, res) => {
-  const input = orderInputSchema.parse(req.body);
+ordersRouter.post('/', async (c) => {
+  const input = orderInputSchema.parse(await c.req.json());
 
   const existing = await prisma.order.findUnique({
     where: { idempotencyKey: input.idempotencyKey },
     include: { items: true },
   });
   if (existing) {
-    res.status(200).json(existing);
-    return;
+    return c.json(existing, 200);
   }
 
   const productIds = input.items.map((item) => item.productId);
@@ -55,14 +54,14 @@ ordersRouter.post('/', async (req, res) => {
     include: { items: true },
   });
 
-  res.status(201).json(order);
+  return c.json(order, 201);
 });
 
-ordersRouter.get('/:id', async (req, res) => {
+ordersRouter.get('/:id', async (c) => {
   const order = await prisma.order.findUnique({
-    where: { id: req.params.id },
+    where: { id: c.req.param('id') },
     include: { items: true },
   });
   if (!order) throw new HttpError(404, 'Ordern hittades inte.');
-  res.json(order);
+  return c.json(order);
 });
