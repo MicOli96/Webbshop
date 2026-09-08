@@ -78,10 +78,6 @@ export default function Header() {
     navigate(trimmed ? `/?q=${encodeURIComponent(trimmed)}` : "/");
   };
 
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
