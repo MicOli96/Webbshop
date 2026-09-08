@@ -13,10 +13,10 @@ import { alpha, styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-import { Link } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import { moomin } from "../theme";
 
-const Search = styled("div")(({ theme }) => ({
+const Search = styled("form")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: moomin.paper,
@@ -55,12 +55,28 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
+  const queryParam = searchParams.get("q") ?? "";
+  const [searchValue, setSearchValue] = React.useState(queryParam);
+  const [lastQueryParam, setLastQueryParam] = React.useState(queryParam);
+
+  if (queryParam !== lastQueryParam) {
+    setLastQueryParam(queryParam);
+    setSearchValue(queryParam);
+  }
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const handleSearchSubmit = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    const trimmed = searchValue.trim();
+    navigate(trimmed ? `/?q=${encodeURIComponent(trimmed)}` : "/");
+  };
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -147,12 +163,21 @@ export default function Header() {
           >
             Mumindalen
           </Typography>
-          <Search>
+          <Search onSubmit={handleSearchSubmit}>
             <SearchIconWrapper>
-              <SearchIcon fontSize="small" />
+              <IconButton
+                type="submit"
+                size="small"
+                aria-label="sök"
+                sx={{ pointerEvents: "auto", p: 0 }}
+              >
+                <SearchIcon fontSize="small" />
+              </IconButton>
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Sök i dalen…"
+              value={searchValue}
+              onChange={(event) => setSearchValue(event.target.value)}
               inputProps={{ "aria-label": "sök" }}
             />
           </Search>
