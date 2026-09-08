@@ -7,6 +7,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Container from "@mui/material/Container";
+import Snackbar from "@mui/material/Snackbar";
 import { alpha } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { useSetAtom } from "jotai";
@@ -24,6 +25,7 @@ export default function Home() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("q")?.trim() ?? "";
   const addItem = useSetAtom(addItemAtom);
+  const [toastOpen, setToastOpen] = useState(false);
 
   useEffect(() => {
     void getProducts().then((data) => {
@@ -245,6 +247,7 @@ export default function Home() {
                       price: product.price,
                       quantity: 1,
                     });
+                    setToastOpen(true);
                   }}
                 >
                   Lägg i kundvagn
@@ -254,6 +257,12 @@ export default function Home() {
           ))}
         </Box>
       </Container>
+      <Snackbar
+        open={toastOpen}
+        autoHideDuration={2500}
+        onClose={() => setToastOpen(false)}
+        message="Tillagd i kundvagnen"
+      />
     </Box>
   );
 }
