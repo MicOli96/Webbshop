@@ -7,8 +7,8 @@ import CardMedia from "@mui/material/CardMedia";
 import Container from "@mui/material/Container";
 import { alpha } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useSearchParams } from "react-router";
 import HillDivider from "../components/hillDivider";
 import { getProducts } from "../services/productService";
 import { moomin } from "../theme";
@@ -17,6 +17,8 @@ import type { Product } from "../types/product";
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("q")?.trim() ?? "";
 
   useEffect(() => {
     void getProducts().then((data) => {
@@ -25,9 +27,39 @@ export default function Home() {
     });
   }, []);
 
+  const filteredProducts = useMemo(() => {
+    if (!query) return products;
+    const needle = query.toLowerCase();
+    return products.filter(
+      (product) =>
+        product.title.toLowerCase().includes(needle) ||
+        product.description.toLowerCase().includes(needle),
+    );
+  }, [products, query]);
+
   return (
     <Box component="main">
-      <Box sx={{ bgcolor: moomin.sage, color: moomin.cream }}>
+      <Box
+        sx={{
+          bgcolor: moomin.sage,
+          color: moomin.cream,
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <Box
+          component="img"
+          src="/images/little-my.png"
+          alt="Lilla My"
+          sx={{
+            display: { xs: "none", sm: "block" },
+            position: "absolute",
+            left: 380,
+            bottom: 100,
+            width: { sm: 300, md: 400 },
+            height: "auto",
+          }}
+        />
         <Container
           maxWidth="md"
           sx={{ pt: { xs: 6, sm: 8 }, pb: { xs: 4, sm: 5 } }}
@@ -46,31 +78,38 @@ export default function Home() {
               size="small"
             ></Button>
           </Box>
-          <Typography
-            variant="h2"
-            sx={{ fontSize: { xs: "2.4rem", sm: "3.2rem" }, maxWidth: "14ch" }}
-          >
-            Skatter från Mumindalen
-          </Typography>
-          <Typography
-            sx={{
-              mt: 2,
-              maxWidth: "48ch",
-              fontSize: "1.05rem",
-              color: alpha(moomin.cream, 0.9),
-            }}
-          >
-            Handplockade fynd ur dalens gömmor — från Mymlans muggar till
-            Muminpappas gamla reseminnen. Allt du ser här finns i ett enda
-            exemplar av verkligheten, i vårt lager.
-          </Typography>
+          <Box sx={{ textAlign: "center" }}>
+            <Typography
+              variant="h2"
+              sx={{
+                fontSize: { xs: "2.4rem", sm: "3.2rem" },
+                maxWidth: "14ch",
+                mx: "auto",
+              }}
+            >
+              Skatter från Mumindalen
+            </Typography>
+            <Typography
+              sx={{
+                mt: 2,
+                maxWidth: "48ch",
+                fontSize: "1.05rem",
+                color: alpha(moomin.cream, 0.9),
+                mx: "auto",
+              }}
+            >
+              Handplockade fynd ur dalens gömmor — från Mymlans muggar till
+              Muminpappas gamla reseminnen. Allt du ser här finns i ett enda
+              exemplar av verkligheten, i vårt lager.
+            </Typography>
+          </Box>
         </Container>
         <HillDivider fill={moomin.cream} />
       </Box>
 
       <Container maxWidth="lg" sx={{ py: { xs: 4, sm: 6 } }}>
         <Typography variant="h5" sx={{ mb: 0.5 }}>
-          I hyllan just nu
+          {query ? `Sökresultat för "${query}"` : "I hyllan just nu"}
         </Typography>
         <Typography variant="body2" sx={{ color: "text.secondary", mb: 4 }}>
           Klicka på en vara för att läsa mer om den.
@@ -83,12 +122,14 @@ export default function Home() {
             gap: 4,
           }}
         >
-          {!loading && products.length === 0 && (
+          {!loading && filteredProducts.length === 0 && (
             <Typography sx={{ gridColumn: "1 / -1" }}>
-              Hyllorna är tomma just nu.
+              {query
+                ? "Inga varor matchade din sökning."
+                : "Hyllorna är tomma just nu."}
             </Typography>
           )}
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <Card key={product.id}>
               <CardActionArea
                 component={Link}
