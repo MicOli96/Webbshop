@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router";
+import Alert from "@mui/material/Alert";
+import { createOrder } from "../services/orderService";
 import type { SubmitEvent } from "react";
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import TextField from "@mui/material/TextField";
 import type { Customer } from "../types/order";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -71,18 +74,76 @@ export default function Cart() {
 
   const [errors, setErrors] = useState<CustomerErrors>({});
 
-  // Validerar leveransuppgifterna när formuläret skickas
-  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
-    event.preventDefault();
+  // Navigation och tömning av kundvagnen
+  const navigate = useNavigate();
+  const setCartItems = useSetAtom(cartItemsAtom);
+  
+  // Status och fel vid beställning
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  
+  // Stoppar flera samtidiga skickningar
+  const submittingRef = useRef(false);
 
+  // Validerar leveransuppgifterna när formuläret skickas
+  // Validerar uppgifterna och sparar ordern
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
+    event.preventDefault();
+  
+    if (submittingRef.current) return;
+  
     const validationErrors = validateCustomer(customer);
     setErrors(validationErrors);
-
-    if (Object.keys(validationErrors).length > 0) {
+    setSubmitError("");
+  
+    if (Object.keys(validationErrors).length > 0) return;
+  
+    if (items.length === 0) {
+      setSubmitError("Kundvagnen är tom.");
       return;
     }
-
-    
+  
+    submittingRef.current = true;
+    setSubmitting(true);
+  
+    try {
+      // Återanvänd samma nyckel om kunden försöker igen
+      let checkoutKey = sessionStorage.getItem("checkoutKey");
+  
+      if (!checkoutKey) {
+        checkoutKey = crypto.randomUUID();
+        sessionStorage.setItem("checkoutKey", checkoutKey);
+      }
+  
+      const order = await createOrder({
+        idempotencyKey: checkoutKey,
+        customer: {
+          name: customer.name.trim(),
+          email: customer.email.trim(),
+          phone: customer.phone.trim(),
+          address: customer.address.trim(),
+        },
+        items: items.map((item) => ({
+          productId: item.productId,
+          quantity: item.quantity,
+        })),
+      });
+  
+      // Töm kundvagnen först när ordern har sparats
+      setCartItems([]);
+      sessionStorage.removeItem("checkoutKey");
+  
+      navigate(`/confirmation/${order.id}`, { replace: true });
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Kunde inte slutföra köpet. Försök igen."
+      );
+    } finally {
+      submittingRef.current = false;
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -254,7 +315,7 @@ export default function Cart() {
             </Box>
             <Box
               component="form"
-              onSubmit={handleSubmit}
+              onSubmit={(event) => void handleSubmit(event)}
               noValidate
               sx={{ mt: 5 }}
             >
@@ -335,9 +396,17 @@ export default function Cart() {
       }
     />
 
-    <Button type="submit" variant="contained">
-      Kontrollera leveransuppgifter
-    </Button>
+{submitError && (
+  <Alert severity="error">{submitError}</Alert>
+)}
+
+<Button
+  type="submit"
+  variant="contained"
+  disabled={submitting}
+>
+  {submitting ? "Beställningen skickas…" : "Slutför köp"}
+</Button>
   </Stack>
 </Box>
           </>

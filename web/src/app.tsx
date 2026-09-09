@@ -1,3 +1,4 @@
+import Confirmation from "./pages/confirmation";
 import { BrowserRouter, Route, Routes } from "react-router";
 import Layout from "./components/layout";
 import AdminPage from "./pages/admin/adminPage";
@@ -14,6 +15,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="product/:id" element={<ProductPage />} />
           <Route path="checkout" element={<Checkout />} />
+          <Route path="confirmation/:id" element={<Confirmation />} />
           <Route path="admin" element={<AdminPage />}>
             <Route path="products/new" element={<ProductFormDialog />} />
             <Route path="products/:id/edit" element={<ProductFormDialog />} />
