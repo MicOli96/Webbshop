@@ -1,3 +1,8 @@
+import type { SubmitEvent } from "react";
+import Button from "@mui/material/Button";
+import { useState } from "react";
+import TextField from "@mui/material/TextField";
+import type { Customer } from "../types/order";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import RemoveShoppingCartOutlinedIcon from "@mui/icons-material/RemoveShoppingCartOutlined";
 import AddIcon from "@mui/icons-material/Add";
@@ -18,11 +23,67 @@ import {
 } from "../context/cart-provider";
 import { moomin } from "../theme";
 
+// enkelt felmeddelande  
+type CustomerErrors = Partial<Record<keyof Customer, string>>;
+
+function validateCustomer(customer: Customer): CustomerErrors {
+  const errors: CustomerErrors = {};
+
+  if (customer.name.trim().length < 2) {
+    errors.name = "Ange ett namn med minst två tecken.";
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customer.email.trim())) {
+    errors.email = "Ange en giltig e-postadress.";
+  }
+
+  const phone = customer.phone.trim();
+  const phoneDigits = phone.replace(/\D/g, "");
+
+  if (
+    !/^\+?[\d\s()-]+$/.test(phone) ||
+    phoneDigits.length < 6 ||
+    phoneDigits.length > 15
+  ) {
+    errors.phone = "Ange ett giltigt telefonnummer med 6–15 siffror.";
+  }
+
+  if (customer.address.trim().length < 5) {
+    errors.address = "Ange din fullständiga adress.";
+  }
+
+  return errors;
+}
+
 export default function Cart() {
   const items = useAtomValue(cartItemsAtom);
   const total = useAtomValue(cartTotalAtom);
   const updateQuantity = useSetAtom(updateQuantityAtom);
   const removeItem = useSetAtom(removeItemAtom);
+
+  // order fält
+  const [customer, setCustomer] = useState<Customer>({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+  });
+
+  const [errors, setErrors] = useState<CustomerErrors>({});
+
+  // Validerar leveransuppgifterna när formuläret skickas
+  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const validationErrors = validateCustomer(customer);
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) {
+      return;
+    }
+
+    
+  }
 
   return (
     <Box component="main">
@@ -191,6 +252,94 @@ export default function Cart() {
                 {total.toFixed(2)} kr
               </Typography>
             </Box>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              noValidate
+              sx={{ mt: 5 }}
+            >
+  <Typography variant="h5" sx={{ mb: 3 }}>
+    Leveransuppgifter
+  </Typography>
+
+  <Stack spacing={2}>
+    <TextField
+      label="Namn"
+      name="name"
+      autoComplete="name"
+      required
+      fullWidth
+      error={Boolean(errors.name)}
+  helperText={errors.name}
+      value={customer.name}
+      onChange={(event) =>
+        setCustomer((previous) => ({
+          ...previous,
+          name: event.target.value,
+        }))
+      }
+    />
+
+    <TextField
+      label="E-post"
+      name="email"
+      type="email"
+      autoComplete="email"
+      required
+      fullWidth
+      error={Boolean(errors.email)}
+      helperText={errors.email}
+      value={customer.email}
+      onChange={(event) =>
+        setCustomer((previous) => ({
+          ...previous,
+          email: event.target.value,
+        }))
+      }
+    />
+
+    <TextField
+      label="Telefonnummer"
+      name="phone"
+      type="tel"
+      autoComplete="tel"
+      required
+      fullWidth
+      error={Boolean(errors.phone)}
+      helperText={errors.phone}
+      value={customer.phone}
+      onChange={(event) =>
+        setCustomer((previous) => ({
+          ...previous,
+          phone: event.target.value,
+        }))
+      }
+    />
+
+    <TextField
+      label="Fullständig adress"
+      name="address"
+      autoComplete="street-address"
+      required
+      fullWidth
+      error={Boolean(errors.address)}
+      helperText={
+        errors.address || "Ange gata, gatunummer, postnummer och ort."
+      }
+      value={customer.address}
+      onChange={(event) =>
+        setCustomer((previous) => ({
+          ...previous,
+          address: event.target.value,
+        }))
+      }
+    />
+
+    <Button type="submit" variant="contained">
+      Kontrollera leveransuppgifter
+    </Button>
+  </Stack>
+</Box>
           </>
         )}
       </Container>
